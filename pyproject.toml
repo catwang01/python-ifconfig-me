@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "python-ifconfig-me"
+version = "0.1.0"
+description = "This is a simple command line script to get public ip"
+authors = ["catwang01 <edwardelricwzx@gmail.com>"]
+license = "GPL"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+aiohttp = "^3.9.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+ifconfig-me = 'python_ifconfig_me:main'
