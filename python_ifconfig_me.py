@@ -1,14 +1,27 @@
-from dataclasses import dataclass
-import json
-import asyncio
-from typing import Callable, Optional
-import aiohttp
-from collections import Counter
 import argparse
+import asyncio
+import json
+from collections import Counter
+from dataclasses import dataclass
+from typing import Optional
 
-async def make_async_api_call(session: aiohttp.ClientSession, 
-                              api_url: str, 
-                              callback: Callable[[str], Optional[str]]) -> Optional[str]:
+import aiohttp
+
+
+@dataclass
+class GetIPsArgs:
+    return_statistics: bool=False
+
+@dataclass
+class GetIPsResult:
+    ip: str
+    statistics: list
+
+@dataclass
+class MainArgs:
+    show_statistics: bool=False
+
+async def make_async_api_call(session, api_url, callback):
     try:
         async with session.get(api_url, timeout=1) as response:
             if response.status == 200:
@@ -17,11 +30,7 @@ async def make_async_api_call(session: aiohttp.ClientSession,
         print(f"Run into error making API call to {api_url}: {e}")
     return None
 
-@dataclass
-class GetIpArgs:
-    show_statistics: bool = None
-
-async def get_ip_async(args: GetIpArgs) -> Optional[str]:
+async def get_async_ips(args: GetIPsArgs) -> Optional[GetIPsResult]:
     api_urls = {
         'https://ifconfig.me/ip': lambda text: text,
         'https://httpbin.org/ip': lambda text: json.loads(text).get('origin'),
@@ -37,26 +46,34 @@ async def get_ip_async(args: GetIpArgs) -> Optional[str]:
     if results:
         counter = list(Counter(results).items())
         counter.sort(key=lambda x: (x[1], -len(x[0])), reverse=True)
-        if args.show_statistics:
-            print("statistics: ", counter)
         most_common_result = counter[0][0]
-        return most_common_result
+        statistics = counter if args.return_statistics else None
+        return GetIPsResult(ip=most_common_result, statistics=statistics)
     return None
 
-def get_ip(args) -> Optional[str]:
-    return asyncio.run(get_ip_async(args))
+    
+def get_ips(args: Optional[GetIPsArgs]=None) -> Optional[GetIPsResult]:
+    if args is None:
+        args = GetIPsArgs()
+    return asyncio.run(get_async_ips(args))
 
-def get_args() -> GetIpArgs:
+def get_args() -> MainArgs:
     parser = argparse.ArgumentParser()
     parser.add_argument("--show-statistics", action='store_true', default=False)
-    args = parser.parse_args(namespace=GetIpArgs())
+    args = parser.parse_args(namespace=MainArgs())
     return args
 
 def main():
     args = get_args()
+    getIPsArgs = GetIPsArgs(return_statistics=args.show_statistics)
     try:
-        ip = get_ip(args)
-        print(f"{ip}")
+        result = get_ips(getIPsArgs)
+        if result is None:
+            print("Failed to detect any IP")
+        else:
+            if args.show_statistics:
+                print(f"{result.statistics}")
+            print(f"{result.ip}")
     except Exception as e:
         print("No successful API call with status code 200.")
 
