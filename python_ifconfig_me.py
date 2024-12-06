@@ -16,7 +16,7 @@ GLOBAL_TIMEOUT = 5
 
 
 @dataclass
-class GetIPsArgs:
+class GetIPsOptions:
     return_statistics: bool = False
     ipv6: bool = False
     ipv4: bool = False
@@ -65,7 +65,7 @@ def is_ipv4(ip: str) -> bool:
     return "." in ip
 
 
-async def get_async_ips(args: GetIPsArgs) -> Optional[GetIPsResult]:
+async def get_async_ips(args: GetIPsOptions) -> Optional[GetIPsResult]:
     api_urls = {
         "https://ifconfig.me/ip": lambda text: text.strip(),
         "https://checkip.amazonaws.com": lambda text: text.strip(),
@@ -118,9 +118,9 @@ async def get_async_ips(args: GetIPsArgs) -> Optional[GetIPsResult]:
     )
 
 
-def get_ips(args: Optional[GetIPsArgs] = None) -> Optional[GetIPsResult]:
+def get_ips(args: Optional[GetIPsOptions] = None) -> Optional[GetIPsResult]:
     if args is None:
-        args = GetIPsArgs()
+        args = GetIPsOptions()
     return asyncio.run(get_async_ips(args))
 
 
@@ -168,7 +168,7 @@ def main():
     if not args:
         return
     logger.setLevel(args.logLevel)
-    getIPsArgs = GetIPsArgs(
+    getIPsArgs = GetIPsOptions(
         return_statistics=args.show_statistics,
         ipv6=args.ipv6,
         ipv4=args.ipv4,
