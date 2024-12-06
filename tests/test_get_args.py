@@ -19,6 +19,7 @@ def test_default_parameters():
 @pytest.mark.parametrize(
     "logLevelStr, expectedLogLevel", [
         ("DEBUG", logging.DEBUG),
+        ("debug", logging.DEBUG),
         ("11", 11)
     ]
 )

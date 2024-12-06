@@ -125,20 +125,22 @@ def get_ips(args: Optional[GetIPsOptions] = None) -> Optional[GetIPsResult]:
 
 
 # parse loglevel from string
-def parse_loglevel(logLevel: str):
+def parse_loglevel(logLevelStr: str):
     try:
-        return int(logLevel)
+        return int(logLevelStr)
     except Exception:
         pass
-    if hasattr(logging, logLevel):
-        return getattr(logging, logLevel)
-    raise ValueError(f"Can't parse the loglevel from str {logLevel!r}")
+    logLevelStrUpper = logLevelStr.upper()
+    if hasattr(logging, logLevelStrUpper):
+        return getattr(logging, logLevelStrUpper)
+    raise ValueError(f"Can't parse the loglevel from str {logLevelStr!r}")
 
 
 def get_args(raw_args) -> Optional[CommandLineArgs]:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--logLevel",
+        "--loglevel", "--logLevel", "--log-level",
+        dest="logLevel",
         type=parse_loglevel,
         default=logging.ERROR,
         help="Logging level, can be either string or positive int. Valid string: [DEBUG, INFO, WARNING, ERROR, CRITICAL]",
