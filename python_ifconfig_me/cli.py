@@ -6,7 +6,7 @@ from dataclasses import dataclass, is_dataclass
 from json import JSONEncoder
 from typing import Optional
 
-from python_ifconfig_me import GetIPsOptions, get_ips
+from python_ifconfig_me import GetIPsOptions, getIPs
 from python_ifconfig_me.ipretriever.callbackIPRetriever import CallbackIPRetriever
 from python_ifconfig_me.ipretriever.IPRetriever import IPResultObject
 from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
@@ -82,7 +82,7 @@ def main():
         ipv4=args.ipv4,
         prefer_ipv6=args.prefer_ipv6,
     )
-    result = get_ips(getIPsArgs)
+    result = getIPs(getIPsArgs)
     if result is None:
         print("No successful API call with status code 200.")
     else:
