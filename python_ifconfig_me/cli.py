@@ -13,7 +13,7 @@ from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRet
 from python_ifconfig_me.utils import parse_loglevel
 
 logger = logging.getLogger(__name__)
-
+rootLogger = logging.getLogger(__name__.split('.')[0])
 
 class CustomJSONEncoder(JSONEncoder):
 
@@ -75,7 +75,7 @@ def main():
     args = get_args(sys.argv[1:])
     if not args:
         return
-    logger.setLevel(args.logLevel)
+    rootLogger.setLevel(args.logLevel)
     getIPsArgs = GetIPsOptions(
         return_statistics=args.show_statistics,
         ipv6=args.ipv6,
