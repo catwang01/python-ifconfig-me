@@ -32,6 +32,7 @@ class CommandLineArgs:
     ipv6: bool = False
     ipv4: bool = False
     prefer_ipv6: bool = False
+    timeout: int = 5
 
 
 def get_args(raw_args) -> Optional[CommandLineArgs]:
@@ -64,6 +65,7 @@ def get_args(raw_args) -> Optional[CommandLineArgs]:
         default=False,
         help="Prefer IPv6 over IPv4. By default, prefer IPv4 over IPv6, which means choose IPv4 when the IPv4 and IPv6 have the same frequency. Note that, the preference only matters when a IPv4 and IPv6 have the same frequency. Use this flag to override the default behavior.",
     )
+    parser.add_argument("--timeout", type=int, default=5, help="Timeout for API call.")
     args = parser.parse_args(raw_args, namespace=CommandLineArgs())
     if args.ipv4 and args.ipv6:
         print("--ipv4 and --ipv6 can't be used together")
@@ -81,6 +83,7 @@ def main():
         ipv6=args.ipv6,
         ipv4=args.ipv4,
         prefer_ipv6=args.prefer_ipv6,
+        timeout=args.timeout
     )
     result = getIPs(getIPsArgs)
     if result is None:

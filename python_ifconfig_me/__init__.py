@@ -2,7 +2,7 @@ import asyncio
 import json
 import logging
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, TypedDict, Unpack
 
 import aiohttp
 
@@ -20,8 +20,6 @@ from python_ifconfig_me.vote.voteStrategy import (
 )
 
 logger = logging.getLogger(__name__)
-
-GLOBAL_TIMEOUT = 5
 
 DEFAULT_IP_RETRIEVERS: List[IPRetriever] = []
 
@@ -61,16 +59,20 @@ class GetIPsOptions:
     ipv4: bool = False
     prefer_ipv6: bool = False
     prefer_ipv4: bool = True
+    timeout: int = 5
+
+
+class RetrieveIPsAsyncKwargs(TypedDict):
+    timeout: int
 
 
 async def retrieveIPsAsync(
     ipRetrievers: List[IPRetriever],
+    **kwargs: Unpack[RetrieveIPsAsyncKwargs],
 ) -> List[IPResultObject]:
-    async with aiohttp.ClientSession() as session:
-        context = IPRetrieverContext(
-            session=session,
-            timeout=GLOBAL_TIMEOUT,
-        )
+    timeout = kwargs.get("timeout", 5)
+    context = IPRetrieverContext(session=aiohttp.ClientSession(), timeout=timeout)
+    async with context.session:
         tasks = [ipRetriever.getIPAsync(context) for ipRetriever in ipRetrievers]
         results = await asyncio.gather(*tasks)
 
@@ -78,17 +80,17 @@ async def retrieveIPsAsync(
 
 
 def getIPs(
-    args: Optional[GetIPsOptions] = None,
+    options: Optional[GetIPsOptions] = None,
     ipRetrievers: Optional[List[IPRetriever]] = None,
     voteStrategy: Optional[SimpleVoteStrategy] = None,
 ) -> Optional[VoteResult]:
-    if args is None:
-        args = GetIPsOptions()
+    if options is None:
+        options = GetIPsOptions()
     if ipRetrievers is None:
         ipRetrievers = DEFAULT_IP_RETRIEVERS
-    ipResults = asyncio.run(retrieveIPsAsync(ipRetrievers))
+    ipResults = asyncio.run(retrieveIPsAsync(ipRetrievers, timeout=options.timeout))
     context = VoteStrategyContext(
-        prefer_ipv4=args.prefer_ipv4, ipv4=args.ipv4, ipv6=args.ipv6
+        prefer_ipv4=options.prefer_ipv4, ipv4=options.ipv4, ipv6=options.ipv6
     )
     if voteStrategy is None:
         voteStrategy = SimpleVoteStrategy()
