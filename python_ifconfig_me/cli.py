@@ -1,4 +1,5 @@
 import argparse
+import asyncio
 import json
 import logging
 import sys
@@ -6,14 +7,15 @@ from dataclasses import dataclass, is_dataclass
 from json import JSONEncoder
 from typing import Optional
 
-from python_ifconfig_me import GetIPsOptions, getIPs
+from python_ifconfig_me import GetIPsOptions, getIPsAsync
 from python_ifconfig_me.ipretriever.callbackIPRetriever import CallbackIPRetriever
 from python_ifconfig_me.ipretriever.IPRetriever import IPResultObject
 from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
 from python_ifconfig_me.utils import parse_loglevel
 
 logger = logging.getLogger(__name__)
-rootLogger = logging.getLogger(__name__.split('.')[0])
+rootLogger = logging.getLogger(__name__.split(".")[0])
+
 
 class CustomJSONEncoder(JSONEncoder):
 
@@ -73,7 +75,7 @@ def getArgs(raw_args) -> Optional[CommandLineArgs]:
     return args
 
 
-def main():
+async def mainAsync():
     args = getArgs(sys.argv[1:])
     if not args:
         return
@@ -83,15 +85,19 @@ def main():
         ipv6=args.ipv6,
         ipv4=args.ipv4,
         prefer_ipv6=args.prefer_ipv6,
-        timeout=args.timeout
+        timeout=args.timeout,
     )
-    result = getIPs(getIPsArgs)
+    result = await getIPsAsync(getIPsArgs)
     if result is None:
         print("No successful API call with status code 200.")
     else:
         if args.show_statistics:
             print(json.dumps(result, cls=CustomJSONEncoder, indent=2))
         print(f"{result.ip}")
+
+
+def main():
+    asyncio.run(mainAsync())
 
 
 if __name__ == "__main__":

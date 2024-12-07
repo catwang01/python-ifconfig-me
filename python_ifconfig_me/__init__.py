@@ -79,7 +79,7 @@ async def retrieveIPsAsync(
     return results
 
 
-def getIPs(
+async def getIPsAsync(
     options: Optional[GetIPsOptions] = None,
     ipRetrievers: Optional[List[IPRetriever]] = None,
     voteStrategy: Optional[SimpleVoteStrategy] = None,
@@ -88,7 +88,7 @@ def getIPs(
         options = GetIPsOptions()
     if ipRetrievers is None:
         ipRetrievers = DEFAULT_IP_RETRIEVERS
-    ipResults = asyncio.run(retrieveIPsAsync(ipRetrievers, timeout=options.timeout))
+    ipResults = await retrieveIPsAsync(ipRetrievers, timeout=options.timeout)
     context = VoteStrategyContext(
         prefer_ipv4=options.prefer_ipv4, ipv4=options.ipv4, ipv6=options.ipv6
     )
