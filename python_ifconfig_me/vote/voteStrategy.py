@@ -7,32 +7,32 @@ from python_ifconfig_me.ipretriever.IPRetriever import IPResultObject
 
 
 @dataclass
-class VoteResult:
+class VotingResult:
     ip: str
     statistics: list[StatisticsInformationItem]
 
 
 @dataclass
-class VoteStrategyContext:
+class VotingStrategyContext:
     prefer_ipv4: bool
     ipv4: bool
     ipv6: bool
 
 
-class IVoteStrategy(metaclass=ABCMeta):
+class IVotingStrategy(metaclass=ABCMeta):
 
     @abstractmethod
     def vote(
-        self, results: List[IPResultObject], context: VoteStrategyContext
-    ) -> Optional[VoteResult]:
+        self, results: List[IPResultObject], context: VotingStrategyContext
+    ) -> Optional[VotingResult]:
         pass
 
 
-class SimpleVoteStrategy(IVoteStrategy):
+class SimpleVotingStrategy(IVotingStrategy):
 
     def vote(
-        self, results: List[IPResultObject], context: VoteStrategyContext
-    ) -> Optional[VoteResult]:
+        self, results: List[IPResultObject], context: VotingStrategyContext
+    ) -> Optional[VotingResult]:
         ipv4_list = []
         ipv6_list = []
         for result in results:
@@ -76,4 +76,4 @@ class SimpleVoteStrategy(IVoteStrategy):
             key=lambda x: x.getSortKey(context.prefer_ipv4),
             reverse=True,
         )
-        return VoteResult(ip=most_common_ip, statistics=statistics)
+        return VotingResult(ip=most_common_ip, statistics=statistics)

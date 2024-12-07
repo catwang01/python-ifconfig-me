@@ -14,9 +14,9 @@ from python_ifconfig_me.ipretriever.IPRetriever import (
 )
 from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
 from python_ifconfig_me.vote.voteStrategy import (
-    SimpleVoteStrategy,
-    VoteResult,
-    VoteStrategyContext,
+    SimpleVotingStrategy,
+    VotingResult,
+    VotingStrategyContext,
 )
 
 logger = logging.getLogger(__name__)
@@ -82,17 +82,17 @@ async def retrieveIPsAsync(
 async def getIPsAsync(
     options: Optional[GetIPsOptions] = None,
     ipRetrievers: Optional[List[IPRetriever]] = None,
-    voteStrategy: Optional[SimpleVoteStrategy] = None,
-) -> Optional[VoteResult]:
+    votingStrategy: Optional[SimpleVotingStrategy] = None,
+) -> Optional[VotingResult]:
     if options is None:
         options = GetIPsOptions()
     if ipRetrievers is None:
         ipRetrievers = DEFAULT_IP_RETRIEVERS
     ipResults = await retrieveIPsAsync(ipRetrievers, timeout=options.timeout)
-    context = VoteStrategyContext(
+    context = VotingStrategyContext(
         prefer_ipv4=options.prefer_ipv4, ipv4=options.ipv4, ipv6=options.ipv6
     )
-    if voteStrategy is None:
-        voteStrategy = SimpleVoteStrategy()
-    votedResult = voteStrategy.vote(ipResults, context)
-    return votedResult
+    if votingStrategy is None:
+        votingStrategy = SimpleVotingStrategy()
+    votingResult = votingStrategy.vote(ipResults, context)
+    return votingResult
