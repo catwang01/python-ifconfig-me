@@ -2,7 +2,8 @@ import logging
 
 import pytest
 
-from python_ifconfig_me import CommandLineArgs, get_args
+from python_ifconfig_me.cli import CommandLineArgs
+from python_ifconfig_me.cli import get_args
 
 
 def test_default_parameters():

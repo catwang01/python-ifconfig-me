@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-aiohttp = "3.4.4"
+aiohttp = "^3.9.1"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.4"
@@ -19,4 +19,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-ifconfig-me = 'python_ifconfig_me:main'
+ifconfig-me = 'python_ifconfig_me.cli:main'
