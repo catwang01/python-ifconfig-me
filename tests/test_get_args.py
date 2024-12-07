@@ -3,11 +3,11 @@ import logging
 import pytest
 
 from python_ifconfig_me.cli import CommandLineArgs
-from python_ifconfig_me.cli import get_args
+from python_ifconfig_me.cli import getArgs
 
 
 def test_default_parameters():
-    result = get_args([])
+    result = getArgs([])
     expected = CommandLineArgs(
         show_statistics=False,
         ipv4=False,
@@ -25,7 +25,7 @@ def test_default_parameters():
     ]
 )
 def test_loglevel_parsing(logLevelStr: str, expectedLogLevel: int):
-    result = get_args(["--logLevel", logLevelStr])
+    result = getArgs(["--logLevel", logLevelStr])
     expected = CommandLineArgs(
         show_statistics=False,
         ipv4=False,
@@ -36,5 +36,5 @@ def test_loglevel_parsing(logLevelStr: str, expectedLogLevel: int):
     assert result == expected
 
 def test_ipv4_ipv6_cannot_be_used_together():
-    result = get_args(["--ipv4", "--ipv6"])
+    result = getArgs(["--ipv4", "--ipv6"])
     assert result is None

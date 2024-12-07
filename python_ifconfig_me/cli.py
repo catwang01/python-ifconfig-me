@@ -35,7 +35,7 @@ class CommandLineArgs:
     timeout: int = 5
 
 
-def get_args(raw_args) -> Optional[CommandLineArgs]:
+def getArgs(raw_args) -> Optional[CommandLineArgs]:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--loglevel",
@@ -74,7 +74,7 @@ def get_args(raw_args) -> Optional[CommandLineArgs]:
 
 
 def main():
-    args = get_args(sys.argv[1:])
+    args = getArgs(sys.argv[1:])
     if not args:
         return
     rootLogger.setLevel(args.logLevel)
