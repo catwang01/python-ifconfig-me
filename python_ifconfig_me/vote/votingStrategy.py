@@ -2,14 +2,14 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Dict, List, Optional
 
-from python_ifconfig_me.vote.statisticsInformationItem import StatisticsInformationItem
+from python_ifconfig_me.vote.statisticsInformationItem import VotingStatisticsItem
 from python_ifconfig_me.ipretriever.IPRetriever import IPResultObject
 
 
 @dataclass
 class VotingResult:
     ip: str
-    statistics: list[StatisticsInformationItem]
+    statistics: list[VotingStatisticsItem]
 
 
 @dataclass
@@ -17,6 +17,7 @@ class VotingStrategyContext:
     prefer_ipv4: bool
     ipv4: bool
     ipv6: bool
+    return_statistics: bool = False
 
 
 class IVotingStrategy(metaclass=ABCMeta):
@@ -52,19 +53,13 @@ class SimpleVotingStrategy(IVotingStrategy):
         if not candidates:
             return None
 
-        statisticsDict: Dict[str, StatisticsInformationItem] = {}
-        most_common_item: Optional[StatisticsInformationItem] = None
+        statisticsDict: Dict[str, VotingStatisticsItem] = {}
         for candidate in candidates:
             ip = candidate.ipObject.ip
             if ip is None:
                 continue
-            if (
-                most_common_item is None
-                or most_common_item.weight < statisticsDict[ip].weight
-            ):
-                most_common_ip = ip
             if ip not in statisticsDict:
-                statisticsDict[ip] = StatisticsInformationItem(candidate.ipObject)
+                statisticsDict[ip] = VotingStatisticsItem(candidate.ipObject)
             else:
                 statisticsDict[ip].weight += 1
             retriever = candidate.getRetriever()
@@ -76,4 +71,10 @@ class SimpleVotingStrategy(IVotingStrategy):
             key=lambda x: x.getSortKey(context.prefer_ipv4),
             reverse=True,
         )
-        return VotingResult(ip=most_common_ip, statistics=statistics)
+        most_common_ip = statistics[0].ipObject.ip
+        if most_common_ip is None:
+            return None
+        return VotingResult(
+            ip=most_common_ip,
+            statistics=statistics if context.return_statistics else [],
+        )

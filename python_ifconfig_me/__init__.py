@@ -13,7 +13,7 @@ from python_ifconfig_me.ipretriever.IPRetriever import (
     IPRetrieverContext,
 )
 from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
-from python_ifconfig_me.vote.voteStrategy import (
+from python_ifconfig_me.vote.votingStrategy import (
     SimpleVotingStrategy,
     VotingResult,
     VotingStrategyContext,
@@ -57,7 +57,6 @@ class GetIPsOptions:
     return_statistics: bool = False
     ipv6: bool = False
     ipv4: bool = False
-    prefer_ipv6: bool = False
     prefer_ipv4: bool = True
     timeout: int = 5
 
@@ -90,7 +89,10 @@ async def getIPsAsync(
         ipRetrievers = DEFAULT_IP_RETRIEVERS
     ipResults = await retrieveIPsAsync(ipRetrievers, timeout=options.timeout)
     context = VotingStrategyContext(
-        prefer_ipv4=options.prefer_ipv4, ipv4=options.ipv4, ipv6=options.ipv6
+        prefer_ipv4=options.prefer_ipv4,
+        ipv4=options.ipv4,
+        ipv6=options.ipv6,
+        return_statistics=options.return_statistics,
     )
     if votingStrategy is None:
         votingStrategy = SimpleVotingStrategy()
