@@ -196,7 +196,7 @@ async def test_getIPs_most_common_ip_prefer_ipv6_works_when_both_have_the_same_w
 
     mock_get.side_effect = side_effect
     retrievers: List[IPRetriever] = [retriever1, retriever2]
-    options = GetIPsOptions(return_statistics=True, prefer_ipv4=False)
+    options = GetIPsOptions(return_statistics=True, prefer_ipv6=True)
     result = await getIPsAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(
@@ -230,7 +230,7 @@ async def test_getIPs_most_common_ip_prefer_ipv6_doesnt_work_when_dont_have_the_
 
     mock_get.side_effect = side_effect
     retrievers: List[IPRetriever] = [retriever1, retriever1, retriever2]
-    options = GetIPsOptions(return_statistics=True, prefer_ipv4=False)
+    options = GetIPsOptions(return_statistics=True, prefer_ipv6=True)
     result = await getIPsAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(
@@ -256,12 +256,13 @@ async def test_getIPs_most_common_ip_failed_retriever_are_ignored(
     # Simulate the case where the second retriever failed
     mock_get.side_effect = [MockResponse(ipv4, 200), MockResponse(ipv4, 404), MockResponse(ipv4, 200)]
     retrievers: List[IPRetriever] = [retriever1] * 3
-    options = GetIPsOptions(return_statistics=True, prefer_ipv4=False)
+    options = GetIPsOptions(return_statistics=True)
     result = await getIPsAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(
         ip=ipv4,
         statistics=[
+            # only 2 retrievers are counted
             VotingStatisticsItem(
                 ipObject=IPObject(ipv4), weight=2, retrievers=[retriever1] * 2
             ),

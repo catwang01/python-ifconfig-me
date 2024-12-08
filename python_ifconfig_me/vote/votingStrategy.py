@@ -14,7 +14,7 @@ class VotingResult:
 
 @dataclass
 class VotingStrategyContext:
-    prefer_ipv4: bool
+    prefer_ipv6: bool
     ipv4: bool
     ipv6: bool
     return_statistics: bool = False
@@ -68,7 +68,7 @@ class SimpleVotingStrategy(IVotingStrategy):
         statistics = list(statisticsDict.values())
         statistics = sorted(
             statistics,
-            key=lambda x: x.getSortKey(context.prefer_ipv4),
+            key=lambda x: x.getSortKey(context.prefer_ipv6),
             reverse=True,
         )
         most_common_ip = statistics[0].ipObject.ip

@@ -57,7 +57,7 @@ class GetIPsOptions:
     return_statistics: bool = False
     ipv6: bool = False
     ipv4: bool = False
-    prefer_ipv4: bool = True
+    prefer_ipv6: bool = False
     timeout: int = 5
 
 
@@ -89,7 +89,7 @@ async def getIPsAsync(
         ipRetrievers = DEFAULT_IP_RETRIEVERS
     ipResults = await retrieveIPsAsync(ipRetrievers, timeout=options.timeout)
     context = VotingStrategyContext(
-        prefer_ipv4=options.prefer_ipv4,
+        prefer_ipv6=options.prefer_ipv6,
         ipv4=options.ipv4,
         ipv6=options.ipv6,
         return_statistics=options.return_statistics,
