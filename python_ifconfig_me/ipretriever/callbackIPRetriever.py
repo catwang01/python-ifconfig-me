@@ -12,8 +12,9 @@ logger = logging.getLogger(__name__)
 
 class CallbackIPRetriever(IPRetriever):
 
-    def __init__(self, url: str, callback) -> None:
+    def __init__(self, url: str, callback, priority: int=0) -> None:
         self.url = url
+        self.priority = priority
         self._callback = callback
 
     async def getIPAsync(self, context: IPRetrieverContext) -> IPResultObject:
@@ -30,4 +31,4 @@ class CallbackIPRetriever(IPRetriever):
             logger.warning(
                 f"Run into error making API call to {self.url} due to error {e}"
             )
-        return IPResultObject(IPObject(ip), retriever=self)
+        return IPResultObject(IPObject(ip), retriever=self, priority=self.priority)

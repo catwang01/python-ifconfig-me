@@ -5,10 +5,8 @@ import pytest
 
 from python_ifconfig_me import GetIPsOptions, getIPsAsync
 from python_ifconfig_me.ipretriever.IPRetriever import IPObject, IPRetriever
-from python_ifconfig_me.ipretriever.simpleTextIPRetriever import \
-    SimpleTextIPRetriever
-from python_ifconfig_me.vote.votingStrategy import (VotingResult,
-                                                    VotingStatisticsItem)
+from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
+from python_ifconfig_me.vote.votingStrategy import VotingResult, VotingStatisticsItem
 
 
 @pytest.fixture
@@ -23,7 +21,7 @@ def retriever2():
 
 @pytest.fixture
 def retriever3():
-    return SimpleTextIPRetriever("example3.com")
+    return SimpleTextIPRetriever("example3.com", priority=1)
 
 
 class MockResponse:
@@ -146,6 +144,21 @@ async def test_getIPs_most_common_ip_only_return_ipv6(mock_get, retriever1, retr
 
 @pytest.mark.asyncio
 @patch("aiohttp.ClientSession.get")
+async def test_getIPs_most_common_ip_returns_empty_if_no_ipv6_when_prefer_ipv6_is_specified(
+    mock_get, retriever1
+):
+    ipv4 = "127.0.0.1"
+
+    mock_get.return_value = MockResponse(ipv4, 200)
+    retrievers: List[IPRetriever] = [retriever1] * 2
+    options = GetIPsOptions(return_statistics=True, ipv6=True)
+    result = await getIPsAsync(options=options, ipRetrievers=retrievers)
+
+    assert result == None
+
+
+@pytest.mark.asyncio
+@patch("aiohttp.ClientSession.get")
 async def test_getIPs_most_common_ip_prefer_ipv4_works_when_both_have_the_same_weight(
     mock_get, retriever1, retriever2
 ):
@@ -249,12 +262,17 @@ async def test_getIPs_most_common_ip_prefer_ipv6_doesnt_work_when_dont_have_the_
 @pytest.mark.asyncio
 @patch("aiohttp.ClientSession.get")
 async def test_getIPs_most_common_ip_failed_retriever_are_ignored(
-    mock_get, retriever1,
+    mock_get,
+    retriever1,
 ):
     ipv4 = "127.0.0.1"
 
     # Simulate the case where the second retriever failed
-    mock_get.side_effect = [MockResponse(ipv4, 200), MockResponse(ipv4, 404), MockResponse(ipv4, 200)]
+    mock_get.side_effect = [
+        MockResponse(ipv4, 200),
+        MockResponse(ipv4, 404),
+        MockResponse(ipv4, 200),
+    ]
     retrievers: List[IPRetriever] = [retriever1] * 3
     options = GetIPsOptions(return_statistics=True)
     result = await getIPsAsync(options=options, ipRetrievers=retrievers)
@@ -263,6 +281,36 @@ async def test_getIPs_most_common_ip_failed_retriever_are_ignored(
         ip=ipv4,
         statistics=[
             # only 2 retrievers are counted
+            VotingStatisticsItem(
+                ipObject=IPObject(ipv4), weight=2, retrievers=[retriever1] * 2
+            ),
+        ],
+    )
+
+
+@pytest.mark.asyncio
+@patch("aiohttp.ClientSession.get")
+async def test_getIPs_priority_take_preference_over_weight(
+    mock_get, retriever1, retriever3
+):
+    ipv4 = "127.0.0.1"
+
+    def side_effect(url, **kwargs):
+        return MockResponse(ipv4, 200)
+
+    # Simulate the case where the second retriever failed
+    mock_get.side_effect = side_effect
+    retrievers: List[IPRetriever] = [retriever1, retriever1, retriever3]
+    options = GetIPsOptions(return_statistics=True)
+    result = await getIPsAsync(options=options, ipRetrievers=retrievers)
+
+    assert result == VotingResult(
+        ip=ipv4,
+        statistics=[
+            # only 2 retrievers are counted
+            VotingStatisticsItem(
+                ipObject=IPObject(ipv4), priority=1, weight=1, retrievers=[retriever3]
+            ),
             VotingStatisticsItem(
                 ipObject=IPObject(ipv4), weight=2, retrievers=[retriever1] * 2
             ),

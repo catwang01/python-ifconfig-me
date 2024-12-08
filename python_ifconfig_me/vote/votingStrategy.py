@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from python_ifconfig_me.vote.statisticsInformationItem import VotingStatisticsItem
 from python_ifconfig_me.ipretriever.IPRetriever import IPResultObject
@@ -53,22 +53,25 @@ class SimpleVotingStrategy(IVotingStrategy):
         if not candidates:
             return None
 
-        statisticsDict: Dict[str, VotingStatisticsItem] = {}
+        statisticsDict: Dict[Tuple[str, int], VotingStatisticsItem] = {}
         for candidate in candidates:
             ip = candidate.ipObject.ip
             if ip is None:
                 continue
-            if ip not in statisticsDict:
-                statisticsDict[ip] = VotingStatisticsItem(candidate.ipObject)
+            priority = candidate.priority
+            key = (ip, priority)
+            if key not in statisticsDict:
+                statisticsDict[key] = VotingStatisticsItem(candidate.ipObject, priority=priority)
             else:
-                statisticsDict[ip].weight += 1
+                statisticsDict[key].weight += 1
             retriever = candidate.getRetriever()
             if retriever is not None:
-                statisticsDict[ip].retrievers.append(retriever)
+                statisticsDict[key].retrievers.append(retriever)
+
         statistics = list(statisticsDict.values())
         statistics = sorted(
             statistics,
-            key=lambda x: x.getSortKey(context.prefer_ipv6),
+            key=lambda x: x.getSortKey(prefer_ipv6=context.prefer_ipv6),
             reverse=True,
         )
         most_common_ip = statistics[0].ipObject.ip
