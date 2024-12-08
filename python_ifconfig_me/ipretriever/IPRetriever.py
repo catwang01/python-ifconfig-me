@@ -11,9 +11,10 @@ class IPObject:
 
     def isIPv6(self) -> bool:
         return self.ip is not None and ":" in self.ip
-    
+
     def isIPv4(self) -> bool:
         return self.ip is not None and "." in self.ip
+
 
 class IPResultObject:
 

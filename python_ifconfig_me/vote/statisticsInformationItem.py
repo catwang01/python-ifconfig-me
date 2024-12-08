@@ -1,8 +1,13 @@
+import sys
+from dataclasses import dataclass, field
+from typing import Any, List, TypedDict
+
 from python_ifconfig_me.ipretriever.IPRetriever import IPObject, IPRetriever
 
-
-from dataclasses import dataclass, field
-from typing import Any, List, TypedDict, Unpack
+if sys.version_info >= (3, 11):
+    from typing import Unpack
+else:
+    from typing_extensions import Unpack
 
 
 class GetSortKeyKwargs(TypedDict):

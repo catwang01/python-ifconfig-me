@@ -2,7 +2,13 @@ import asyncio
 import json
 import logging
 from dataclasses import dataclass
-from typing import List, Optional, TypedDict, Unpack
+import sys
+from typing import List, Optional, TypedDict
+
+if sys.version_info >= (3, 11):
+    from typing import Unpack
+else:
+    from typing_extensions import Unpack
 
 import aiohttp
 

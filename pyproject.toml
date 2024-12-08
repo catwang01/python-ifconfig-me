@@ -9,11 +9,13 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 aiohttp = "^3.9.1"
+typing-extensions = { version="^4.0.1", python="<=3.10" }
 
 [tool.poetry.group.test.dependencies]
 pytest = "^8.3.4"
 coverage = "^7.6.9"
 pytest-asyncio = "^0.24.0"
+tox = "^4.23.2"
 
 [build-system]
 requires = ["poetry-core"]

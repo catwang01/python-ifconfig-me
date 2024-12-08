@@ -17,12 +17,10 @@ def test_default_parameters():
     )
     assert result == expected
 
+
 @pytest.mark.parametrize(
-    "logLevelStr, expectedLogLevel", [
-        ("DEBUG", logging.DEBUG),
-        ("debug", logging.DEBUG),
-        ("11", 11)
-    ]
+    "logLevelStr, expectedLogLevel",
+    [("DEBUG", logging.DEBUG), ("debug", logging.DEBUG), ("11", 11)],
 )
 def test_loglevel_parsing(logLevelStr: str, expectedLogLevel: int):
     result = getArgs(["--logLevel", logLevelStr])
@@ -31,9 +29,10 @@ def test_loglevel_parsing(logLevelStr: str, expectedLogLevel: int):
         ipv4=False,
         ipv6=False,
         prefer_ipv6=False,
-        logLevel=expectedLogLevel
+        logLevel=expectedLogLevel,
     )
     assert result == expected
+
 
 def test_ipv4_ipv6_cannot_be_used_together():
     result = getArgs(["--ipv4", "--ipv6"])

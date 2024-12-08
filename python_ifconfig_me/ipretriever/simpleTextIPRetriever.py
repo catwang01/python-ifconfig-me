@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 class SimpleTextIPRetriever(IPRetriever):
 
-    def __init__(self, url: str, priority: int=0) -> None:
+    def __init__(self, url: str, priority: int = 0) -> None:
         self.url = url
         self.priority = priority
 

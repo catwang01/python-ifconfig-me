@@ -61,7 +61,9 @@ class SimpleVotingStrategy(IVotingStrategy):
             priority = candidate.priority
             key = (ip, priority)
             if key not in statisticsDict:
-                statisticsDict[key] = VotingStatisticsItem(candidate.ipObject, priority=priority)
+                statisticsDict[key] = VotingStatisticsItem(
+                    candidate.ipObject, priority=priority
+                )
             else:
                 statisticsDict[key].weight += 1
             retriever = candidate.getRetriever()
