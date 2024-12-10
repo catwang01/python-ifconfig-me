@@ -5,7 +5,7 @@ T = TypeVar("T")
 
 
 def nn(x: Optional[T]) -> T:
-    assert x is not None, "Value is None"
+    assert x is not None, "Value is expected to be non-None"
     return x
 
 
