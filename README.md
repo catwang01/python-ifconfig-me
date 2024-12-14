@@ -123,7 +123,7 @@ Use `--logLevel` to set the log level. The default log level is `ERROR`.
 
 ```python
 import asyncio
-from python_ifconfig_me import getIPsAsync
+from python_ifconfig_me import getPublicIPAsync
 
-asyncio.run(getIPsAsync())
+asyncio.run(getPublicIPAsync())
 ```

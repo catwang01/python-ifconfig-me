@@ -86,7 +86,7 @@ async def retrieveIPsAsync(
     return results
 
 
-async def getIPsAsync(
+async def getPublicIPAsync(
     options: Optional[GetIPsOptions] = None,
     ipRetrievers: Optional[List[IPRetriever]] = None,
     votingStrategy: Optional[SimpleVotingStrategy] = None,

@@ -7,7 +7,7 @@ from dataclasses import dataclass, is_dataclass
 from json import JSONEncoder
 from typing import Optional
 
-from python_ifconfig_me import GetIPsOptions, getIPsAsync
+from python_ifconfig_me import GetIPsOptions, getPublicIPAsync
 from python_ifconfig_me.ipretriever.callbackIPRetriever import CallbackIPRetriever
 from python_ifconfig_me.ipretriever.IPRetriever import IPResultObject
 from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
@@ -87,7 +87,7 @@ async def mainAsync():
         prefer_ipv6=args.prefer_ipv6,
         timeout=args.timeout,
     )
-    result = await getIPsAsync(getIPsArgs)
+    result = await getPublicIPAsync(getIPsArgs)
     if result is None:
         print("No successful API call with status code 200.")
     else:
