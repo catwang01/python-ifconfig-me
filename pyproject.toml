@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "python-ifconfig-me"
-version = "0.1.0"
+version = "0.0.1"
 description = "This is a tool to get public ip of your machine"
 authors = ["catwang01 <edwardelricwzx@gmail.com>"]
 license = "GPL"
