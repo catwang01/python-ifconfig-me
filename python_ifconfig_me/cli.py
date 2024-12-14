@@ -7,7 +7,7 @@ from dataclasses import dataclass, is_dataclass
 from json import JSONEncoder
 from typing import Optional
 
-from python_ifconfig_me import GetIPsOptions, getPublicIPAsync
+from python_ifconfig_me import GetPublicIPOptions, getPublicIPAsync
 from python_ifconfig_me.ipretriever.callbackIPRetriever import CallbackIPRetriever
 from python_ifconfig_me.ipretriever.IPRetriever import IPResultObject
 from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
@@ -80,7 +80,7 @@ async def mainAsync():
     if not args:
         return
     rootLogger.setLevel(args.logLevel)
-    getIPsArgs = GetIPsOptions(
+    getIPsArgs = GetPublicIPOptions(
         return_statistics=args.show_statistics,
         ipv6=args.ipv6,
         ipv4=args.ipv4,

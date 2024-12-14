@@ -144,9 +144,9 @@ The sync version is just a wrapper of the async version. If possible, use the as
 
 ```python
 import asyncio
-from python_ifconfig_me import getPublicIPAsync, GetIPsOptions
+from python_ifconfig_me import getPublicIPAsync, GetPublicIPOptions
 
-options = GetIPsOptions(
+options = GetPublicIPOptions(
     return_statistics=True
 )
 asyncio.run(getPublicIPAsync(options))

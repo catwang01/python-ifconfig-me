@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
-from python_ifconfig_me import GetIPsOptions, getPublicIPAsync
+from python_ifconfig_me import GetPublicIPOptions, getPublicIPAsync
 from python_ifconfig_me.ipretriever.IPRetriever import IPObject, IPRetriever
 from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
 from python_ifconfig_me.vote.votingStrategy import VotingResult, VotingStatisticsItem
@@ -64,7 +64,7 @@ async def test_getIPs_return_statistics(mock_get, retrievers):
     ip = "127.0.0.1"
     mock_get.return_value = MockResponse(ip, 200)
 
-    options = GetIPsOptions(return_statistics=True)
+    options = GetPublicIPOptions(return_statistics=True)
     result = await getPublicIPAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(
@@ -97,7 +97,7 @@ async def test_getIPs_most_common_ip_will_be_returned(mock_get, retriever1, retr
         retriever2,
         retriever2,
     ]
-    options = GetIPsOptions(return_statistics=True)
+    options = GetPublicIPOptions(return_statistics=True)
     result = await getPublicIPAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(
@@ -129,7 +129,7 @@ async def test_getIPs_most_common_ip_only_return_ipv6(mock_get, retriever1, retr
 
     mock_get.side_effect = side_effect
     retrievers: List[IPRetriever] = [retriever1, retriever1, retriever2]
-    options = GetIPsOptions(return_statistics=True, ipv6=True)
+    options = GetPublicIPOptions(return_statistics=True, ipv6=True)
     result = await getPublicIPAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(
@@ -151,7 +151,7 @@ async def test_getIPs_most_common_ip_returns_empty_if_no_ipv6_when_prefer_ipv6_i
 
     mock_get.return_value = MockResponse(ipv4, 200)
     retrievers: List[IPRetriever] = [retriever1] * 2
-    options = GetIPsOptions(return_statistics=True, ipv6=True)
+    options = GetPublicIPOptions(return_statistics=True, ipv6=True)
     result = await getPublicIPAsync(options=options, ipRetrievers=retrievers)
 
     assert result == None
@@ -175,7 +175,7 @@ async def test_getIPs_most_common_ip_prefer_ipv4_works_when_both_have_the_same_w
 
     mock_get.side_effect = side_effect
     retrievers: List[IPRetriever] = [retriever1, retriever2]
-    options = GetIPsOptions(return_statistics=True)
+    options = GetPublicIPOptions(return_statistics=True)
     result = await getPublicIPAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(
@@ -209,7 +209,7 @@ async def test_getIPs_most_common_ip_prefer_ipv6_works_when_both_have_the_same_w
 
     mock_get.side_effect = side_effect
     retrievers: List[IPRetriever] = [retriever1, retriever2]
-    options = GetIPsOptions(return_statistics=True, prefer_ipv6=True)
+    options = GetPublicIPOptions(return_statistics=True, prefer_ipv6=True)
     result = await getPublicIPAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(
@@ -243,7 +243,7 @@ async def test_getIPs_most_common_ip_prefer_ipv6_doesnt_work_when_dont_have_the_
 
     mock_get.side_effect = side_effect
     retrievers: List[IPRetriever] = [retriever1, retriever1, retriever2]
-    options = GetIPsOptions(return_statistics=True, prefer_ipv6=True)
+    options = GetPublicIPOptions(return_statistics=True, prefer_ipv6=True)
     result = await getPublicIPAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(
@@ -274,7 +274,7 @@ async def test_getIPs_most_common_ip_failed_retriever_are_ignored(
         MockResponse(ipv4, 200),
     ]
     retrievers: List[IPRetriever] = [retriever1] * 3
-    options = GetIPsOptions(return_statistics=True)
+    options = GetPublicIPOptions(return_statistics=True)
     result = await getPublicIPAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(
@@ -301,7 +301,7 @@ async def test_getIPs_priority_take_preference_over_weight(
     # Simulate the case where the second retriever failed
     mock_get.side_effect = side_effect
     retrievers: List[IPRetriever] = [retriever1, retriever1, retriever3]
-    options = GetIPsOptions(return_statistics=True)
+    options = GetPublicIPOptions(return_statistics=True)
     result = await getPublicIPAsync(options=options, ipRetrievers=retrievers)
 
     assert result == VotingResult(

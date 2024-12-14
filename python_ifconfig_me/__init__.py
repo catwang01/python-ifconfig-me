@@ -63,7 +63,7 @@ populateDefaultIPList(DEFAULT_IP_RETRIEVERS)
 
 
 @dataclass
-class GetIPsOptions:
+class GetPublicIPOptions:
     return_statistics: bool = False
     ipv6: bool = False
     ipv4: bool = False
@@ -89,12 +89,12 @@ async def retrieveIPsAsync(
 
 
 async def getPublicIPAsync(
-    options: Optional[GetIPsOptions] = None,
+    options: Optional[GetPublicIPOptions] = None,
     ipRetrievers: Optional[List[IPRetriever]] = None,
     votingStrategy: Optional[SimpleVotingStrategy] = None,
 ) -> Optional[VotingResult]:
     if options is None:
-        options = GetIPsOptions()
+        options = GetPublicIPOptions()
     if ipRetrievers is None:
         ipRetrievers = DEFAULT_IP_RETRIEVERS
     ipResults = await retrieveIPsAsync(ipRetrievers, timeout=options.timeout)
