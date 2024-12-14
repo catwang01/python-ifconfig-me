@@ -121,9 +121,33 @@ Use `--logLevel` to set the log level. The default log level is `ERROR`.
 
 ## Advanced usage - Use as a library
 
+There are two versions of the library: synchronous and asynchronous.
+
+Async version:
+
 ```python
 import asyncio
-from python_ifconfig_me import getPublicIPAsync
+from python_ifconfig_me import getIPsAsync
 
-asyncio.run(getPublicIPAsync())
+asyncio.run(getIPAsync())
+```
+
+Sync version:
+
+```python
+from python_ifconfig_me import getPublicIP
+
+public = getPublicIP()
+```
+
+The sync version is just a wrapper of the async version. If possible, use the async version because it is more efficient.
+
+```python
+import asyncio
+from python_ifconfig_me import getPublicIPAsync, GetIPsOptions
+
+options = GetIPsOptions(
+    return_statistics=True
+)
+asyncio.run(getPublicIPAsync(options))
 ```

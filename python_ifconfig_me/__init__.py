@@ -5,6 +5,8 @@ from dataclasses import dataclass
 import sys
 from typing import List, Optional, TypedDict
 
+from python_ifconfig_me.utils.async_ import run_async
+
 if sys.version_info >= (3, 11):
     from typing import Unpack
 else:
@@ -106,3 +108,6 @@ async def getPublicIPAsync(
         votingStrategy = SimpleVotingStrategy()
     votingResult = votingStrategy.vote(ipResults, context)
     return votingResult
+
+def getPublicIP(*args, **kwargs):
+    return run_async(getPublicIPAsync, *args, **kwargs)
