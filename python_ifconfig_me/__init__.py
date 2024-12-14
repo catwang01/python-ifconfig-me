@@ -26,6 +26,8 @@ from python_ifconfig_me.vote.votingStrategy import (
 )
 
 logger = logging.getLogger(__name__)
+rootLogger = logging.getLogger(__name__.split(".")[0])
+rootLogger.setLevel(logging.ERROR)
 
 DEFAULT_IP_RETRIEVERS: List[IPRetriever] = []
 

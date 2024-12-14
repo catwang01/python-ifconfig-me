@@ -38,7 +38,7 @@ class CommandLineArgs:
 
 
 def getArgs(raw_args) -> Optional[CommandLineArgs]:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument(
         "--loglevel",
         "--logLevel",
@@ -46,7 +46,7 @@ def getArgs(raw_args) -> Optional[CommandLineArgs]:
         dest="logLevel",
         type=parse_loglevel,
         default=logging.ERROR,
-        help="Logging level, can be either string or positive int. Valid string: [DEBUG, INFO, WARNING, ERROR, CRITICAL]",
+        help="Logging level, can be either a string or positive integer. The string or integer has the same sematic as in the Python's standard logging library. Valid string: [DEBUG, INFO, WARNING, ERROR, CRITICAL]",
     )
     parser.add_argument("--show-statistics", action="store_true", default=False)
     parser.add_argument(
