@@ -1,9 +1,8 @@
-from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Protocol, Tuple
 
-from python_ifconfig_me.vote.statisticsInformationItem import VotingStatisticsItem
 from python_ifconfig_me.ipretriever.IPRetriever import IPResultObject
+from python_ifconfig_me.vote.statisticsInformationItem import VotingStatisticsItem
 
 
 @dataclass
@@ -20,9 +19,8 @@ class VotingStrategyContext:
     return_statistics: bool = False
 
 
-class IVotingStrategy(metaclass=ABCMeta):
+class IVotingStrategy(Protocol):
 
-    @abstractmethod
     def vote(
         self, results: List[IPResultObject], context: VotingStrategyContext
     ) -> Optional[VotingResult]:

@@ -1,6 +1,5 @@
-from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Protocol
 
 import aiohttp
 
@@ -38,8 +37,7 @@ class IPRetrieverContext:
     timeout: int
 
 
-class IPRetriever(metaclass=ABCMeta):
+class IPRetriever(Protocol):
 
-    @abstractmethod
     async def getIPAsync(self, context: IPRetrieverContext) -> IPResultObject:
         pass
