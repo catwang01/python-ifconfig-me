@@ -2,7 +2,8 @@ import sys
 from dataclasses import dataclass, field
 from typing import Any, List, TypedDict
 
-from python_ifconfig_me.ipretriever.IPRetriever import IPObject, IPRetriever
+from python_ifconfig_me.core.ipObject import IPObject
+from python_ifconfig_me.core.ipretriever.ipRetriever import IPRetriever
 
 if sys.version_info >= (3, 11):
     from typing import Unpack

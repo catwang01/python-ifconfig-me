@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Protocol, Tuple
 
-from python_ifconfig_me.ipretriever.IPRetriever import IPResultObject
-from python_ifconfig_me.vote.statisticsInformationItem import VotingStatisticsItem
+from python_ifconfig_me.core.ipretriever.ipRetriever import IPResultObject
+from python_ifconfig_me.core.vote.statisticsInformationItem import VotingStatisticsItem
 
 
 @dataclass

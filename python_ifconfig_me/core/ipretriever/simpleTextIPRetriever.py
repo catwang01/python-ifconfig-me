@@ -1,6 +1,6 @@
 import logging
 
-from python_ifconfig_me.ipretriever.callbackIPRetriever import CallbackIPRetriever
+from python_ifconfig_me.core.ipretriever.callbackIPRetriever import CallbackIPRetriever
 
 logger = logging.getLogger(__name__)
 
