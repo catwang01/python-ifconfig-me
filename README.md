@@ -1,31 +1,26 @@
-[TOC]
+[[TOC]]
 
-## What this package does
+# python-ifconfig-me
 
-This is a simple python library used to detect the current public ip.
+## What this project is about
 
-## How this package works
+This is a simple python library used to detect the current public ip of your machine.
 
-The idea behind this library is pretty simple: majority voting among multiple public ip detection services.
+## Getting started
 
-AAs of now the following services are configured to be used for detention:
+### Pre-requisites
 
-- https://checkip.amazonaws.com
-- https://icanhazip.com
-- https://ifconfig.co/ip
-- https://ifconfig.me/ip
-- https://ipecho.net/plain
-- https://ipinfo.io/ip
-- https://httpbin.org/ip
-- https://api.ipify.org
+Python version >= 3.9
 
-## Installation
+### Installation
 
 ```bash
 pip install python-ifconfig-me
 ```
 
-## Basic usage - Use as a tool
+## Usage
+
+### Basic usage - Use as a tool
 
 Show help messages:
 
@@ -119,17 +114,17 @@ $ ifconfig-me --prefer-ipv6
 
 Use `--logLevel` to set the log level. The default log level is `ERROR`.
 
-## Advanced usage - Use as a library
+### Advanced usage - Use as a library
 
-There are two versions of the library: synchronous and asynchronous.
+There are two versions of the getPublicIP function: synchronous and asynchronous.
 
 Async version:
 
 ```python
 import asyncio
-from python_ifconfig_me import getIPsAsync
+from python_ifconfig_me import getPublicIPAsync
 
-asyncio.run(getIPAsync())
+asyncio.run(getPublicIPAsync())
 ```
 
 Sync version:
@@ -151,3 +146,23 @@ options = GetPublicIPOptions(
 )
 asyncio.run(getPublicIPAsync(options))
 ```
+
+## How this proect works
+
+The idea behind this library is pretty simple: majority voting among multiple third-party public ip detection services.
+
+As of now the following services are configured to be used for detention:
+
+- https://checkip.amazonaws.com
+- https://icanhazip.com
+- https://ifconfig.co/ip
+- https://ifconfig.me/ip
+- https://ipecho.net/plain
+- https://ipinfo.io/ip
+- https://httpbin.org/ip
+- https://api.ipify.org
+
+
+## LICENSE
+
+The project is licensed under the GPL license. For more information, please refer to the [LICENSE](./LICENSE) file.
