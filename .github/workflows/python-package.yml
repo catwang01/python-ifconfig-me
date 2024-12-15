@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["pypy3.10", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +21,15 @@ jobs:
         run: python -c "import sys; print(sys.version)"
       - name: Install tox and any other packages
         run: pip install tox
-      - name: Run tox
+      - name: Run test cases
         # Run tox using the version of Python in `PATH`
         run: tox -e py
-
+      - name: Run lint check
+        # Run tox using the version of Python in `PATH`
+        run: tox -e lint
+      - name: Run coverage  check
+        # Run tox using the version of Python in `PATH`
+        run: tox -e coverage
+      - name: Run mypy check
+        # Run tox using the version of Python in `PATH`
+        run: tox -e type
