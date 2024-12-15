@@ -1,10 +1,10 @@
 import asyncio
-import json
 import logging
-from dataclasses import dataclass
 import sys
+from dataclasses import dataclass
 from typing import List, Optional, TypedDict
 
+from python_ifconfig_me.core.ipretriever import DEFAULT_IP_RETRIEVERS
 from python_ifconfig_me.utils.async_ import run_async
 
 if sys.version_info >= (3, 11):
@@ -14,14 +14,10 @@ else:
 
 import aiohttp
 
-from python_ifconfig_me.core.ipretriever.callbackIPRetriever import CallbackIPRetriever
 from python_ifconfig_me.core.ipretriever.ipRetriever import (
     IPResultObject,
     IPRetriever,
     IPRetrieverContext,
-)
-from python_ifconfig_me.core.ipretriever.simpleTextIPRetriever import (
-    SimpleTextIPRetriever,
 )
 from python_ifconfig_me.core.vote.votingStrategy import (
     SimpleVotingStrategy,
@@ -32,36 +28,6 @@ from python_ifconfig_me.core.vote.votingStrategy import (
 logger = logging.getLogger(__name__)
 rootLogger = logging.getLogger(__name__.split(".")[0])
 rootLogger.setLevel(logging.ERROR)
-
-DEFAULT_IP_RETRIEVERS: List[IPRetriever] = []
-
-
-def populateDefaultIPList(ipRetrievers: List[IPRetriever]) -> None:
-    URLS = [
-        "https://ifconfig.me/ip",
-        "https://checkip.amazonaws.com",
-        "https://icanhazip.com",
-        "https://ifconfig.co/ip",
-        "https://ipecho.net/plain",
-        "https://ipinfo.io/ip",
-    ]
-    for url in URLS:
-        ipRetrievers.append(SimpleTextIPRetriever(url))
-    ipRetrievers.append(
-        CallbackIPRetriever(
-            "https://httpbin.org/ip",
-            lambda text: json.loads(text).get("origin").strip(),
-        )
-    )
-    ipRetrievers.append(
-        CallbackIPRetriever(
-            "https://api.ipify.org/?format=json",
-            lambda text: json.loads(text).get("ip").strip(),
-        )
-    )
-
-
-populateDefaultIPList(DEFAULT_IP_RETRIEVERS)
 
 
 @dataclass
