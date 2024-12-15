@@ -149,7 +149,40 @@ options = GetPublicIPOptions(
 asyncio.run(getPublicIPAsync(options))
 ```
 
-### Custom retrievers
+#### Use retrievers
+
+You can pass retrievers to the `getPublicIPAsync/getPublicIP` function. A retriever follows the `IPRetriever` protocol.  You can implement your own retriever by inheriting the `IPRetriever` class.
+
+```python
+import asyncio
+from python_ifconfig_me import getPublicIPAsync, GetPublicIPOptions
+from python_ifconfig_me.core.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
+
+options = GetPublicIPOptions(
+    return_statistics=True
+)
+retrievers = [
+    SimpleTextIPRetriever("https://ifconfig.me/ip"),
+]
+asyncio.run(getPublicIPAsync(options, retrievers))
+```
+
+If you want to add your retriever to the default retrievers, you can use the `DEFAULT_IP_RETRIEVERS` variable.
+
+```python
+import asyncio
+from python_ifconfig_me import getPublicIPAsync, GetPublicIPOptions
+from python_ifconfig_me.core.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
+from python_ifconfig_me.core.ipretriever import DEFAULT_IP_RETRIEVERS
+
+options = GetPublicIPOptions(
+    return_statistics=True
+)
+retrievers = DEFAULT_IP_RETRIEVERS + [
+    SimpleTextIPRetriever("https://ifconfig.me/ip"),
+]
+asyncio.run(getPublicIPAsync(options, retrievers))
+```
 
 ## How this proect works
 
