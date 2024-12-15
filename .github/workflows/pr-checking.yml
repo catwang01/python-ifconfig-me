@@ -1,6 +1,9 @@
-name: Python package
-
-on: [push]
+name: PR Checking
+on:
+    pull_request:
+        branches:
+            - master
+            - main
 
 jobs:
   build:
@@ -27,6 +30,12 @@ jobs:
         # Run tox using the version of Python in `PATH`
         run: |
             tox -e py
+            tox -e coverage-xml
+      - name: Get Coverage
+        uses: orgoro/coverage@v3.2
+        with:
+            coverageFile: ${{ env.COVERAGE_FILE }}
+            token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run lint check
         run: tox -e lint
       - name: Run mypy check
