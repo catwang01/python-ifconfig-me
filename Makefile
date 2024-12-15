@@ -11,5 +11,6 @@ publish: ## Publish the package to PyPI with twine
 	python3 -m twine upload --repository pypi dist/* --v
 
 test: ## Run tests and linters
-	poetry run tox
+	poetry run tox -e
+	poetry run tox -e coverage
 	poetry run tox -e lint,type

@@ -9,6 +9,8 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+    env:
+      COVERAGE_FILE: ./output/coverage.xml
 
     steps:
       - uses: actions/checkout@v4
@@ -23,13 +25,15 @@ jobs:
         run: pip install tox
       - name: Run test cases
         # Run tox using the version of Python in `PATH`
-        run: tox -e py
+        run: |
+            tox -e py
+            tox -e coverage-xml
+      - name: Get Coverage
+        uses: orgoro/coverage@v3.2
+        with:
+            coverageFile: ${{ env.COVERAGE_FILE }}
+            token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run lint check
-        # Run tox using the version of Python in `PATH`
         run: tox -e lint
-      - name: Run coverage  check
-        # Run tox using the version of Python in `PATH`
-        run: tox -e coverage
       - name: Run mypy check
-        # Run tox using the version of Python in `PATH`
         run: tox -e type
