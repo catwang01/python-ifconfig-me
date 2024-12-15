@@ -4,7 +4,7 @@
 
 ## What this project is about
 
-This is a simple python library used to detect the current public ip of your machine.
+This is a simple Python library used to detect the current public IP of your machine.
 
 ## Getting started
 
@@ -34,7 +34,7 @@ Show the current public ip:
 $ ifconfig-me
 ```
 
-Show statistics use the to determine the public ip.
+Show statistics used to determine the public IP.
 
 ```python
 $ ifconfig-me --show-statistics
@@ -184,7 +184,7 @@ retrievers = DEFAULT_IP_RETRIEVERS + [
 asyncio.run(getPublicIPAsync(options, retrievers))
 ```
 
-## How this proect works
+## How this project works
 
 The idea behind this library is pretty simple: majority voting among multiple third-party public ip detection services.
 
