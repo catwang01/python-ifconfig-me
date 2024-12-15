@@ -4,9 +4,15 @@ from unittest.mock import patch
 import pytest
 
 from python_ifconfig_me import GetPublicIPOptions, getPublicIPAsync
-from python_ifconfig_me.ipretriever.IPRetriever import IPObject, IPRetriever
-from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
-from python_ifconfig_me.vote.votingStrategy import VotingResult, VotingStatisticsItem
+from python_ifconfig_me.core.ipObject import IPObject
+from python_ifconfig_me.core.ipretriever.ipRetriever import IPRetriever
+from python_ifconfig_me.core.ipretriever.simpleTextIPRetriever import (
+    SimpleTextIPRetriever,
+)
+from python_ifconfig_me.core.vote.votingStrategy import (
+    VotingResult,
+    VotingStatisticsItem,
+)
 
 
 @pytest.fixture

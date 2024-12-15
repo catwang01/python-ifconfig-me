@@ -8,9 +8,11 @@ from json import JSONEncoder
 from typing import Optional
 
 from python_ifconfig_me import GetPublicIPOptions, getPublicIPAsync
-from python_ifconfig_me.ipretriever.callbackIPRetriever import CallbackIPRetriever
-from python_ifconfig_me.ipretriever.IPRetriever import IPResultObject
-from python_ifconfig_me.ipretriever.simpleTextIPRetriever import SimpleTextIPRetriever
+from python_ifconfig_me.core.ipretriever.callbackIPRetriever import CallbackIPRetriever
+from python_ifconfig_me.core.ipretriever.ipRetriever import IPResultObject
+from python_ifconfig_me.core.ipretriever.simpleTextIPRetriever import (
+    SimpleTextIPRetriever,
+)
 from python_ifconfig_me.utils import parse_loglevel
 
 logger = logging.getLogger(__name__)
@@ -38,7 +40,9 @@ class CommandLineArgs:
 
 
 def getArgs(raw_args) -> Optional[CommandLineArgs]:
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
     parser.add_argument(
         "--loglevel",
         "--logLevel",

@@ -1,8 +1,9 @@
 import logging
 
-from python_ifconfig_me.ipretriever.IPRetriever import IPObject, IPResultObject
-from python_ifconfig_me.ipretriever.IPRetriever import IPRetriever
-from python_ifconfig_me.ipretriever.IPRetriever import IPRetrieverContext
+from python_ifconfig_me.core.ipObject import IPObject
+from python_ifconfig_me.core.ipretriever.ipRetriever import IPResultObject
+from python_ifconfig_me.core.ipretriever.ipRetriever import IPRetriever
+from python_ifconfig_me.core.ipretriever.ipRetriever import IPRetrieverContext
 
 
 import aiohttp

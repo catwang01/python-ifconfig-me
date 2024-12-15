@@ -1,6 +1,7 @@
 import asyncio
 import threading
 
+
 class RunThread(threading.Thread):
     def __init__(self, func, args, kwargs):
         self.func = func
@@ -11,6 +12,7 @@ class RunThread(threading.Thread):
 
     def run(self):
         self.result = asyncio.run(self.func(*self.args, **self.kwargs))
+
 
 def run_async(func, *args, **kwargs):
     try:

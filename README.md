@@ -116,6 +116,8 @@ Use `--logLevel` to set the log level. The default log level is `ERROR`.
 
 ### Advanced usage - Use as a library
 
+#### getPublicIPAsync and getPulicIP
+
 There are two versions of the getPublicIP function: synchronous and asynchronous.
 
 Async version:
@@ -146,6 +148,8 @@ options = GetPublicIPOptions(
 )
 asyncio.run(getPublicIPAsync(options))
 ```
+
+### Custom retrievers
 
 ## How this proect works
 
