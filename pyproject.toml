@@ -1,19 +1,27 @@
 [tool.poetry]
 name = "python-ifconfig-me"
-version = "0.1.0"
-description = "This is a simple command line script to get public ip"
+version = "0.0.2"
+description = "This is a tool to get public ip of your machine"
 authors = ["catwang01 <edwardelricwzx@gmail.com>"]
-license = "GPL"
+license = "GPL-3.0-only"
+repository = "https://github.com/catwang01/python-ifconfig-me"
 readme = "README.md"
+keywords = ["ifconfig", "ip", "public ip", "python", "network", "ipv4", "ipv6"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-aiohttp = "^3.9.3"
+aiohttp = "^3.9.1"
+typing-extensions = { version="^4.0.1", python="<=3.10" }
 
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.4"
+coverage = "^7.6.9"
+pytest-asyncio = "^0.24.0"
+tox = "^4.23.2"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-ifconfig-me = 'python_ifconfig_me:main'
+ifconfig-me = 'python_ifconfig_me.cli:main'
