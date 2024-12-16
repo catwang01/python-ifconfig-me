@@ -2,6 +2,9 @@
 
 # python-ifconfig-me
 
+![](https://img.shields.io/github/actions/workflow/status/catwang01/python-ifconfig-me/python-package.yml)![](https://img.shields.io/github/license/catwang01/python-ifconfig-me)![](https://img.shields.io/github/last-commit/catwang01/python-ifconfig-me)![](https://img.shields.io/pypi/v/python-ifconfig-me)![](https://img.shields.io/codecov/c/github/catwang01/python-ifconfig-me)
+
+
 ## What this project is about
 
 This is a simple Python library used to detect the current public IP of your machine.
