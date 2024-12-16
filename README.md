@@ -2,14 +2,13 @@
 
 ![](https://img.shields.io/github/actions/workflow/status/catwang01/python-ifconfig-me/python-package.yml)![](https://img.shields.io/github/license/catwang01/python-ifconfig-me)![](https://img.shields.io/github/last-commit/catwang01/python-ifconfig-me)![](https://img.shields.io/pypi/v/python-ifconfig-me)![](https://img.shields.io/codecov/c/github/catwang01/python-ifconfig-me)
 
+## Project Overview
 
-## What this project is about
+This is a simple Python library to detect the current public IP of your machine.
 
-This is a simple Python library used to detect the current public IP of your machine.
+## Getting Started
 
-## Getting started
-
-### Pre-requisites
+### Prerequisites
 
 Python version >= 3.9
 
@@ -189,7 +188,7 @@ asyncio.run(getPublicIPAsync(options, retrievers))
 
 The idea behind this library is pretty simple: majority voting among multiple third-party public ip detection services.
 
-As of now the following services are configured to be used for detention:
+As of now, the following services are configured to be used for detention:
 
 - https://checkip.amazonaws.com
 - https://icanhazip.com
